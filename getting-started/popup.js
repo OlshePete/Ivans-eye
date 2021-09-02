@@ -1,14 +1,17 @@
 let onlineButton = document.getElementById("online");
+let changingImg = document.getElementById("mainImg");
 
 chrome.storage.local.get(['online'], function(result) {
 	online = result.online
 	if (online) {
 	onlineButton.style.backgroundColor = "red";
-	onlineButton.innerHTML = 'Следим';
+	onlineButton.innerHTML = 'Не следить';
+	changingImg.src="/images/follow.jpeg";
 	
 	} else {
 	onlineButton.style.backgroundColor = "green";
-	onlineButton.innerHTML = 'Не следим';	
+	onlineButton.innerHTML = 'Следить';
+	changingImg.src="/images/unfollow.jpeg";		
 	}
 });
 
@@ -20,10 +23,12 @@ onlineButton.addEventListener("click", function () {
 		  console.log('Статус:', online);
 		  if (online) {
 			onlineButton.style.backgroundColor = "red";
-			onlineButton.innerHTML = 'Следим';
+			onlineButton.innerHTML = 'Не следить';
+			changingImg.src="/images/follow.jpeg";
 		  } else {
 			onlineButton.style.backgroundColor = "green";
-			onlineButton.innerHTML = 'Не следим';		
+			onlineButton.innerHTML = 'Следить';
+			changingImg.src="/images/unfollow.jpeg";			
 		  }
 	});
 });
