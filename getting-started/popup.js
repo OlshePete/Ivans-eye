@@ -4,14 +4,14 @@ let changingImg = document.getElementById("mainImg");
 chrome.storage.local.get(['online'], function(result) {
 	online = result.online
 	if (online) {
-	onlineButton.style.backgroundColor = "red";
-	onlineButton.innerHTML = 'Не следить';
-	changingImg.src="/images/follow.jpeg";
+	onlineButton.className = "btn btn-danger"
+	onlineButton.innerHTML = 'Следим';
+	changingImg.src="/images/follow_400.jpeg";
 	
 	} else {
-	onlineButton.style.backgroundColor = "green";
-	onlineButton.innerHTML = 'Следить';
-	changingImg.src="/images/unfollow.jpeg";		
+	onlineButton.className = "btn btn-success"
+	onlineButton.innerHTML = 'Не следим';
+	changingImg.src="/images/unfollow_400.jpeg";		
 	}
 });
 
@@ -22,13 +22,13 @@ onlineButton.addEventListener("click", function () {
 		  chrome.storage.local.set({'online': online });
 		  console.log('Статус:', online);
 		  if (online) {
-			onlineButton.style.backgroundColor = "red";
-			onlineButton.innerHTML = 'Не следить';
-			changingImg.src="/images/follow.jpeg";
+			onlineButton.className = "btn btn-danger"
+			onlineButton.innerHTML = 'Следим';
+			changingImg.src="/images/follow_400.jpeg";
 		  } else {
-			onlineButton.style.backgroundColor = "green";
-			onlineButton.innerHTML = 'Следить';
-			changingImg.src="/images/unfollow.jpeg";			
+			onlineButton.className = "btn btn-success"
+			onlineButton.innerHTML = 'Не следим';
+			changingImg.src="/images/unfollow_400.jpeg";			
 		  }
 	});
 });

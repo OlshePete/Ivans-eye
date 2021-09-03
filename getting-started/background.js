@@ -1,5 +1,6 @@
 let online = false;
 const whiteList = ['stackoverflow.com', 'learn.javascript.ru'];
+const whiteList1 = ['stackoverflow', 'github'];
 const searcherList = ['yandex', 'google'];
 
 
@@ -13,12 +14,14 @@ function parseUrl(tabURL) {
   const regexp = /(?<=text\=|q\=)([^\&]*)/;
   const hostname = url.hostname.replace(/.+\/\/|www.|\..+/g, '');
   const isSearcher = searcherList.includes(hostname);
-
+debugger
   const isWhite = whiteList.includes(url.hostname);
-
+  const isWhite1 = whiteList1.includes(url.hostname);
+console.log("this is white one", isWhite1)
   const text = regexp.exec(url.search);
   // яндекс меняет формат URL обновить regexp
   // если использует домен поисковика но не для поиска
+
   if (isSearcher) {
     const status = url.search.includes(`suggest_req`)
     if (!status) {
@@ -39,7 +42,6 @@ function sendUrl() {
       if (online) parseUrl(tabURL);
     })
   })
-
 }
 
 chrome.tabs.onActivated.addListener((activeInfo) => {
@@ -47,8 +49,6 @@ chrome.tabs.onActivated.addListener((activeInfo) => {
 })
 
 chrome.tabs.onUpdated.addListener((activeInfo, change) => {
-  if (change.url && change.status && change.status === "loading") {
-    sendUrl(activeInfo);
-  }
+  if (change.url && change.status && change.status === "loading") sendUrl(activeInfo);
 })
 

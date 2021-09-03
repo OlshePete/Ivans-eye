@@ -3,3 +3,19 @@
     margin: 0;
     text-align: center;
 }
+.card {
+min-width: 400px;
+}
+    
+.card-body {
+
+}
+
+.card-img-top {
+border-radius: 5%;
+}
+
+.btn {
+    margin-top: 3%;
+    width: 40%;
+}
