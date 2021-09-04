@@ -23,22 +23,19 @@ function parseUrl(tabURL) {
 
   const hostname = url.hostname.replace(/.+\/\/|www.|\..+/g, ''); 
   const isSearcher = searcherList.includes(hostname); 
-  const isWhite = checkWhteListAvailability(whiteList, url.hostname.split(".")[0])  //,,,,, большую часть не находит
-  console.log("whiteList",whiteList)
-
-  console.log("url.hostname.split('.')[0]",url.hostname.split(".")[0])
+  const isWhite = checkWhteListAvailability(whiteList,hostname)  
   
   if (isSearcher) {
     const status = url.search.includes(`suggest_req`)
     if (!status) {
       // console.log("Запрос в поисковик", hostname);
       console.log("Данные для отправки: ", `${hostname}+${text[0]}`);
-      sendHTTPrequest(`${hostname}+${text[0]}`)
+      // sendHTTPrequest(`${hostname}+${text[0]}`)
     }
   } else if (isWhite) {
     // console.log("Переход на страницу из белого списка")
     console.log("Данные для отправки: ", `${tabURL}`)
-    sendHTTPrequest( `${tabURL}`)
+    // sendHTTPrequest( `${tabURL}`)
   } else return
 }
 
