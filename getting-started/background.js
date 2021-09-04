@@ -1,8 +1,14 @@
 let online = false;
-const whiteList = ['stackoverflow.com', 'learn.javascript.ru'];
-const whiteList1 = ['stackoverflow', 'github'];
+const whiteList = ['stackoverflow', 'github', 'chekio', 'kaggle', 'coursera', 'codecademy', 'pythontutor', 'codewars', 'python', 'skillbox'];
 const searcherList = ['yandex', 'google'];
 
+function checkWhteListAvailability(arr, val) {
+  return arr.some(arrVal => val === arrVal)
+}
+async function sendHTTPrequest(data) {
+  let url = "http://84.201.152.151:8023/log?url="+data
+  const promise =  await fetch(url)
+}
 
 chrome.runtime.onInstalled.addListener(() => {
   chrome.storage.local.set({ 'online': online });
@@ -11,26 +17,28 @@ chrome.runtime.onInstalled.addListener(() => {
 
 function parseUrl(tabURL) {
   const url = new URL(tabURL);
-  const regexp = /(?<=text\=|q\=)([^\&]*)/;
-  const hostname = url.hostname.replace(/.+\/\/|www.|\..+/g, '');
-  const isSearcher = searcherList.includes(hostname);
-debugger
-  const isWhite = whiteList.includes(url.hostname);
-  const isWhite1 = whiteList1.includes(url.hostname);
-console.log("this is white one", isWhite1)
-  const text = regexp.exec(url.search);
-  // яндекс меняет формат URL обновить regexp
-  // если использует домен поисковика но не для поиска
 
+  const regexp = /(?<=text\=|q\=)([^\&]*)/;
+  const text = regexp.exec(url.search);
+
+  const hostname = url.hostname.replace(/.+\/\/|www.|\..+/g, ''); 
+  const isSearcher = searcherList.includes(hostname); 
+  const isWhite = checkWhteListAvailability(whiteList, url.hostname.split(".")[0])  //,,,,, большую часть не находит
+  console.log("whiteList",whiteList)
+
+  console.log("url.hostname.split('.')[0]",url.hostname.split(".")[0])
+  
   if (isSearcher) {
     const status = url.search.includes(`suggest_req`)
     if (!status) {
-      console.log("Запрос в поисковик", hostname);
-      console.log("Данные для отправки: ", `${hostname} ${text[0].replace(/\+/g, " ")}`);
+      // console.log("Запрос в поисковик", hostname);
+      console.log("Данные для отправки: ", `${hostname}+${text[0]}`);
+      sendHTTPrequest(`${hostname}+${text[0]}`)
     }
   } else if (isWhite) {
-    console.log("Переход на страницу из белого списка")
+    // console.log("Переход на страницу из белого списка")
     console.log("Данные для отправки: ", `${tabURL}`)
+    sendHTTPrequest( `${tabURL}`)
   } else return
 }
 
