@@ -30,12 +30,12 @@ function parseUrl(tabURL) {
     if (!status) {
       // console.log("Запрос в поисковик", hostname);
       console.log("Данные для отправки: ", `${hostname}+${decodeURI(text[0])}`);
-      sendHTTPrequest(encodeURIComponent(`${hostname}+${(text[0])}`))
+      sendHTTPrequest(`${hostname}+${(text[0])}`)
     }
   } else if (isWhite) {
     // console.log("Переход на страницу из белого списка")
     console.log("Данные для отправки: ", `${tabURL}`)
-    sendHTTPrequest(encodeURIComponent(tabURL))
+    sendHTTPrequest(tabURL)
   } else return
 }
 
