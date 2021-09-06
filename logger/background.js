@@ -6,7 +6,7 @@ function checkWhteListAvailability(arr, val) {
   return arr.some(arrVal => val === arrVal)
 }
 async function sendHTTPrequest(data) {
-  let url = "http://84.201.152.151:8023/log?url="+data
+  let url = `http://84.201.152.151:8023/log?url=${encodeURIComponent(data)}`;
   const promise =  await fetch(url)
 }
 
@@ -29,13 +29,14 @@ function parseUrl(tabURL) {
     const status = url.search.includes(`suggest_req`)
     if (!status) {
       // console.log("Запрос в поисковик", hostname);
-      console.log("Данные для отправки: ", `${hostname}+${text[0]}`);
-      // sendHTTPrequest(`${hostname}+${text[0]}`)
+      console.log("Данные для отправки: ", `${hostname}+${decodeURI(text[0])}`);
+
+      sendHTTPrequest(encodeURIComponent(`${hostname}+${decodeURI(text[0])}`))
     }
   } else if (isWhite) {
     // console.log("Переход на страницу из белого списка")
-    console.log("Данные для отправки: ", `${tabURL}`)
-    // sendHTTPrequest( `${tabURL}`)
+    console.log("Данные для отправки: ", `${decodeURI(tabURL)}`)
+    sendHTTPrequest( encodeURIComponent(decodeURI(tabURL)))
   } else return
 }
 
