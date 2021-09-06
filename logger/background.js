@@ -18,9 +18,9 @@ chrome.runtime.onInstalled.addListener(() => {
 function parseUrl(tabURL) {
   const url = new URL(tabURL);
 
+  if (!url.search) return
   const regexp = /(?<=text\=|q\=)([^\&]*)/;
   const text = regexp.exec(url.search);
-
   const isSearcher = checkURLAffiliation(searcherList,url.hostname)  
   const isWhite = checkURLAffiliation(whiteList,url.hostname)  
   
