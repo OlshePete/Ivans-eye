@@ -31,12 +31,12 @@ function parseUrl(tabURL) {
       // console.log("Запрос в поисковик", hostname);
       console.log("Данные для отправки: ", `${hostname}+${decodeURI(text[0])}`);
 
-      sendHTTPrequest(encodeURIComponent(`${hostname}+${decodeURI(text[0])}`))
+      sendHTTPrequest(encodeURIComponent(`${hostname}+${(text[0])}`))
     }
   } else if (isWhite) {
     // console.log("Переход на страницу из белого списка")
-    console.log("Данные для отправки: ", `${decodeURI(tabURL)}`)
-    sendHTTPrequest( encodeURIComponent(decodeURI(tabURL)))
+    console.log("Данные для отправки: ", `${tabURL}`)
+    sendHTTPrequest(encodeURIComponent(tabURL))
   } else return
 }
 
