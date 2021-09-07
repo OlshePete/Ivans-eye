@@ -1,5 +1,5 @@
 let online = false;
-const whiteList = ['stackoverflow', 'github', 'checkio', 'kaggle', 'coursera', 'codecademy', 'pythontutor', 'codewars', 'python', 'skillbox'];
+const whiteList = ['stackoverflow', 'github', 'checkio', 'kaggle', 'coursera', 'codecademy', 'pythontutor', 'codewars', 'python', 'skillbox', 'wikipedia', 'stepik'];
 const searcherList = ['yandex', 'google'];
 
 function checkURLAffiliation(arr, val) {
